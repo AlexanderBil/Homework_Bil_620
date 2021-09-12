@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>homework_12</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta charset="UTF-8">
+</head>
+
+<body>
+
+	<button style="font-size: 18px; margin-bottom: 10px" onclick="changeText()" id="btn">Vote!</button>
+
+	<div>
+		<button style="font-size: 18px" onclick="loadBooks()" id="btn-2">Download books</button>
+		<ul class="books"></ul>
+	</div>
+
+
+	<script>
+
+		function changeText() {
+			const xhr = new XMLHttpRequest();
+			xhr.open('GET', './data.txt', true);
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState != 4) return;
+				if(xhr.status != 200) {
+                 console.log('Error' + xhr.status + ': ' + xhr.statusText);
+                }else{
+					document.getElementById('btn').innerHTML = xhr.responseText	;
+				}	
+			}
+			xhr.send();
+		}
+
+	
+		function loadBooks() {
+			const xhr = new XMLHttpRequest();
+			xhr.open('GET', './books.json', true);
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState != 4) return;
+				if(xhr.status != 200) {
+                 console.log('Error' + xhr.status + ': ' + xhr.statusText);
+                }else{
+					let obj = JSON.parse(xhr.responseText);
+					obj.map(e => document.querySelector('.books').innerHTML += `<li>${e.author}</li>`);
+				}	
+			}
+			xhr.send();
+		}
+	</script>
+
+</body>
+</html>
